@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Исходные файлы\BigInt">
+      <UniqueIdentifier>{a0170e89-2ae2-44ab-bc4c-b86a3f7aa488}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="lab1OOP.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Bin.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="bigint\BigInteger.cc">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClCompile>
+    <ClCompile Include="bigint\BigIntegerAlgorithms.cc">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClCompile>
+    <ClCompile Include="bigint\BigIntegerUtils.cc">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClCompile>
+    <ClCompile Include="bigint\BigUnsigned.cc">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClCompile>
+    <ClCompile Include="bigint\BigUnsignedInABase.cc">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClCompile>
+    <ClCompile Include="Tree.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="object.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Int.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="String.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Double.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Bin.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\BigInteger.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\BigIntegerAlgorithms.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\BigIntegerLibrary.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\BigIntegerUtils.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\BigUnsigned.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\BigUnsignedInABase.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="bigint\NumberlikeArray.hh">
+      <Filter>Исходные файлы\BigInt</Filter>
+    </ClInclude>
+    <ClInclude Include="Tree.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="object.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Table.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Int.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="String.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Double.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Исходные файлы</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
