@@ -312,7 +312,7 @@ inline void Table<object>::print()
 	List < vector < string >> strings_;
 	string class_null = "class NULL";
 
-	vector<int> max_lens;
+	vector<size_t> max_lens;
 	for (int j = 0; j < w; j++) 
 	{
 		vector<string>* column = new vector<string>;
@@ -328,10 +328,10 @@ inline void Table<object>::print()
 			column->push_back(add);
 		}
 
-		int max_len = 0;
+		size_t max_len = 0;
 		for (int i = 0; i < h; i++) 
 		{
-			int len_str = (*column)[i].length();
+			auto len_str = (*column)[i].length();
 			if (len_str > max_len) 
 			{
 				max_len = len_str;
@@ -339,7 +339,7 @@ inline void Table<object>::print()
 		}
 		// Учитываем название столбика при подсчёте длины
 		
-		int len_of_name = class_null.length() + 2;
+		auto len_of_name = class_null.length() + 2;
 		if (lists->get(j)->get_start() != nullptr)
 			len_of_name = (lists->get(j)->get_start()->type_string()).length() + 2;
 
@@ -362,7 +362,7 @@ inline void Table<object>::print()
 	for (int col = 0; col < w; col++) 
 	{
 
-		int name_len = class_null.length() + 2;
+		auto name_len = class_null.length() + 2;
 		if (lists->get(col)->get_start() != nullptr)
 			name_len = (lists->get(col)->get_start()->type_string()).length() + 2;
 		if (name_len < max_lens[col]) {
