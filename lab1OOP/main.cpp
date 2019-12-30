@@ -28,6 +28,34 @@ int main()
 
 	Table<object> table(3,3);
 	
+	int b = 20;
+
+	for (int i = 0; i < table.get_w() - 1; i++)
+	{
+		for (int j = 0; j < table.get_h(); j++)
+		{
+			b--;
+			table.set(j, i, new Int(b));
+		}
+	}
+
+	for (int i = 0; i < table.get_h(); i++)
+	{
+		table.set(i, table.get_w() - 1, new String("Hello, it is " + to_string(table.get_h() - i) + " wow"));
+	}
+
+	table.print();
+	table.sort();
+	table.swap_column(0, 2);
+	table.set(2, 0, new String("5"));
+	table.print();
+
+	table.null(2);
+	table.set(0, 2, new Int(5));
+	table.set(2, 2, new Int(1));
+	table.print();
+	table.sort();
+	table.print();
 
 	table.read_from_file("123.txt");
 	table.print();
