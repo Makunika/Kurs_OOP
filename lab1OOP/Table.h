@@ -20,6 +20,7 @@ public:
 	void resize(int h, int w);
 	T* get(int h, int w);
 	void set(int h, int w, T* data);
+	void set_name_column(int w, string name);
 	void null(int w);
 	int get_h();
 	int get_w();
@@ -28,21 +29,28 @@ public:
 	void write_in_file(string name_file);
 	void clear();
 	void swap_column(int num1, int num2);
+	void csort(int num);
+	void csort();
 	void sort(int num);
-	void sort();
+	void interface();
 
 
 private:
-
+	List<string>* name_column;
 	List<List<T>>* lists;
 	int w;
 	int h;
+
+private:
+	//draw
+	void draw_menu(int pos, vector<string>* menu);
 };
 
 template<class T>
 inline Table<T>::Table()
 {
 	lists = new List<List<T>>();
+	name_column = new List<string>();
 	w = 0;
 	h = 0;
 }
@@ -50,6 +58,7 @@ inline Table<T>::Table()
 template<class T>
 inline Table<T>::Table(int h, int w)
 {
+	name_column = new List<string>(w);
 	lists = new List<List<T>>(w);
 	for (int i = 0; i < w; i++)
 	{
@@ -81,6 +90,7 @@ inline Table<T>::~Table()
 		lists->get(i)->~List();
 	}
 	delete lists;
+	delete name_column;
 }
 
 template<class T>
@@ -94,6 +104,7 @@ inline void Table<T>::resize(int h, int w)
 	}
 	else
 	{
+		name_column->resize(w);
 		lists->resize(w);
 		if (this->w - w < 0)
 		{
@@ -127,6 +138,13 @@ inline void Table<T>::set(int h, int w, T* data)
 {
 	if (h < 0 || w < 0 || w >= this->w || h >= this->h) throw;
 	lists->get(w)->set(h, data);
+}
+
+template<class T>
+inline void Table<T>::set_name_column(int w, string name)
+{
+	if ( w < 0 || w >= this->w ) throw;
+	name_column->set(w, new string(name));
 }
 
 inline void Table<object>::set(int h, int w, object* data)
@@ -192,10 +210,13 @@ inline void Table<object>::write_in_file(string name_file)
 	{
 		for (int i = 0; i < w; i++)
 		{
+			string name_col = "";
+			if (name_column->get(i) != nullptr)
+				name_col = *name_column->get(i);
 			string classname = "class NULL";
 			if (lists->get(i)->get_start() != nullptr)
 				classname = lists->get(i)->get_start()->type_string();
-			out << classname + ": ";
+			out << "(" + name_col + ")" + classname + ": ";
 			for (int j = 0; j < h; j++)
 			{
 				if (lists->get(i)->get(j) != nullptr)
@@ -212,6 +233,8 @@ template<class T>
 inline void Table<T>::clear()
 {
 	delete lists;
+	delete name_column;
+	name_column = new List<string>;
 	lists = new List<List<T>>;
 	h = 0;
 	w = 0;
@@ -225,18 +248,102 @@ inline void Table<T>::swap_column(int num1, int num2)
 }
 
 template<class T>
-inline void Table<T>::sort(int num)
+inline void Table<T>::csort(int num)
 {
 	if (num < 0 || num >= w) throw;
 	lists->get(num)->sort();
 }
 
 template<class T>
-inline void Table<T>::sort()
+inline void Table<T>::csort()
 {
 	for (int i = 0; i < w; i++)
 	{
-		sort(i);
+		csort(i);
+	}
+}
+
+template<class T>
+inline void Table<T>::sort(int num)
+{
+	if (num < 0 || num >= w) throw;
+	bool swapped;
+	for (int i = 0; i < h - 1; i++)
+	{
+		swapped = false;
+		for (int j = 0; j < h - i - 1; j++)
+		{
+			if (get(j, num) == nullptr)
+			{
+				for (int k = 0; k < w; k++)
+				{
+					List<T>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
+				}
+				swapped = true;
+			}
+			else if (get(j+1, num) == nullptr)
+			{
+
+			}
+			else if (*(get(j, num)) > *(get(j+1, num)))
+			{
+				for (int k = 0; k < w; k++)
+				{
+					List<T>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
+				}
+				swapped = true;
+			}
+		}
+		if (swapped == false)
+			break;
+	}
+}
+
+template<class T>
+inline void Table<T>::draw_menu(int pos, vector<string>* menu)
+{
+	system("cls");
+
+	for (int i = 0; i < menu->size(); i++)
+	{
+		if (pos == i)
+			cout << " -->";
+		cout << "  " + (*menu)[i] << endl;
+	}
+}
+
+inline void Table<object>::sort(int num)
+{
+	if (num < 0 || num >= w) throw;
+	bool swapped;
+	for (int i = 0; i < h - 1; i++)
+	{
+		swapped = false;
+		for (int j = 0; j < h - i - 1; j++)
+		{
+			if (get(j, num) == nullptr)
+			{
+				for (int k = 0; k < w; k++)
+				{
+					List<object>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
+				}
+				swapped = true;
+			}
+			else if (get(j + 1, num) == nullptr)
+			{
+
+			}
+			else if (get(j, num)->cmp(*(get(j + 1, num))) == 1)
+			{
+				for (int k = 0; k < w; k++)
+				{
+					List<object>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
+				}
+				swapped = true;
+			}
+		}
+		if (swapped == false)
+			break;
 	}
 }
 
@@ -256,6 +363,10 @@ inline void Table<object>::read_from_file(string name_file)
 
 		regex regularColumn(
 			"([\\s]*)"
+			"([\(]+)"
+			"([\\w\\s]*)"
+			"([\)]+)"
+			"([\\s]*)"
 			"([\\w\\s]+)"
 			"(:\\s)"
 			"([.]*[^#]+)"
@@ -271,12 +382,12 @@ inline void Table<object>::read_from_file(string name_file)
 
 		while (regex_search(all_file_str.c_str(), resultColumn, regularColumn))
 		{
-			string classname = resultColumn[2].str();
-			string str_cells = resultColumn[4].str();
+			string classname = resultColumn[6].str();
+			string str_cells = resultColumn[8].str();
 			int w_tmp = w + 1;
 			resize(h, w_tmp);
 			int h_tmp = 0;
-
+			name_column->set(w - 1, new string(resultColumn[3].str()));
 
 			while (regex_search(str_cells.c_str(), resultCell, regularCell))
 			{
@@ -311,13 +422,14 @@ inline void Table<object>::print()
 
 	List < vector < string >> strings_;
 	string class_null = "class NULL";
+	string name_null = "()";
 
 	vector<size_t> max_lens;
 	for (int j = 0; j < w; j++) 
 	{
 		vector<string>* column = new vector<string>;
 
-		for (int i = 0; i < h; i++) 
+		for (int i = 0; i < h; i++)
 		{
 			string add;
 			if (lists->get(j)->get(i) != nullptr)
@@ -329,26 +441,31 @@ inline void Table<object>::print()
 		}
 
 		size_t max_len = 0;
-		for (int i = 0; i < h; i++) 
+		for (int i = 0; i < h; i++)
 		{
-			auto len_str = (*column)[i].length();
-			if (len_str > max_len) 
+			size_t len_str = (*column)[i].length();
+			if (len_str > max_len)
 			{
 				max_len = len_str;
 			}
 		}
 		// Учитываем название столбика при подсчёте длины
-		
-		auto len_of_name = class_null.length() + 2;
+
+		if (name_column->get(j) != nullptr)
+			name_null = "(" + *name_column->get(j) + ")";
+		else name_null = "()";
+		size_t len_of_name = name_null.length() + class_null.length() + 2;
+
 		if (lists->get(j)->get_start() != nullptr)
-			len_of_name = (lists->get(j)->get_start()->type_string()).length() + 2;
+			len_of_name = name_null.length() + (lists->get(j)->get_start()->type_string()).length() + 2;
+
 
 		if (len_of_name > max_len) {
 			max_len = len_of_name;
 		}
-		max_lens.push_back(max_len);
+		max_lens.push_back((int)max_len);
 		// Теперь знаем максимальную длину строки в столбце
-		for (int row = 0; row < h; row++) 
+		for (int row = 0; row < h; row++)
 		{
 			auto len_of_current_str = (*column)[row].length();
 			if (len_of_current_str < max_len) {
@@ -359,37 +476,44 @@ inline void Table<object>::print()
 		strings_.push_end(column);
 	}
 	// Вывод названий столбиков
-	for (int col = 0; col < w; col++) 
+	for (int col = 0; col < w; col++)
 	{
+		string name_col = "()";
+		if (name_column->get(col) != nullptr)
+			name_col = "(" + *name_column->get(col) + ")";
 
-		auto name_len = class_null.length() + 2;
+		size_t name_len = class_null.length() + 2;
 		if (lists->get(col)->get_start() != nullptr)
 			name_len = (lists->get(col)->get_start()->type_string()).length() + 2;
+		name_len += name_col.length();
+
+
+
 		if (name_len < max_lens[col]) {
 			for (int i = 0; i < max_lens[col] - name_len; i++)
 				std::cout << " ";
 		}
 		if (lists->get(col)->get_start() != nullptr)
-			cout << lists->get(col)->get_start()->type_string() << "| ";
+			cout << name_col + lists->get(col)->get_start()->type_string() << "| ";
 		else
-			cout << class_null << "| ";
+			cout << name_col + class_null << "| ";
 	}
 	cout << "\n";
-	for (int col = 0; col < w; col++) 
+	for (int col = 0; col < w; col++)
 	{
 		for (int i = 0; i < max_lens[col]; i++)
 			cout << "-";
 	}
 	cout << "\n";
 	// Вывод столбцов
-	for (int row = 0; row < h; row++) 
+	for (int row = 0; row < h; row++)
 	{
-		for (int col = 0; col < w; col++) 
+		for (int col = 0; col < w; col++)
 		{
 			cout << (*strings_.get(col))[row];
 		}
 		cout << "\n";
-		for (int col = 0; col < w; col++) 
+		for (int col = 0; col < w; col++)
 		{
 			for (int i = 0; i < max_lens[col]; i++)
 				cout << "-";
@@ -397,3 +521,299 @@ inline void Table<object>::print()
 		cout << "\n";
 	}
 }
+
+
+
+//for interface
+#define BUTTON_ENTER 13
+#define BUTTON_UP 72
+#define BUTTON_DOWN 80
+#include <conio.h>
+
+template<class T>
+inline void Table<T>::interface()
+{
+}
+
+inline void Table<object>::interface()
+{
+	system("color 0C");
+	vector<string> menu = {
+		"Set size",
+		"Set cell",
+		"Get cell",
+		"Null column",
+		"Print",
+		"Read file",
+		"Write file",
+		"Set name column",
+		"Swap column",
+		"Sort by column",
+		"Sort column",
+		"Sort all",
+		"Exit"
+	};
+
+	int pos = 0;
+	draw_menu(pos, &menu);
+	while (true)
+	{
+		switch (_getch())
+		{
+		case BUTTON_ENTER:
+		{// enter
+			if (pos == 0)
+			{
+				int h, w;
+				system("cls");
+				do
+				{
+					cout << "New size:" << endl << "h = ";
+					cin >> h;
+				} while (h < 0);
+				do
+				{
+					cout << "w = ";
+					cin >> w;
+				} while (w < 0);
+				resize(h, w);
+				getchar();
+				getchar();
+			}
+			else if (pos == 1) //set
+			{
+				int h, w;
+				system("cls");
+				do
+				{
+					cout << "h = ";
+					cin >> h;
+				} while (h < 0 || h >= this->h);
+				do
+				{
+					cout << "w = ";
+					cin >> w;
+				} while (w < 0 || w >= this->w);
+				if (lists->get(w)->get_start() != nullptr)
+					cout << "Enter " + lists->get(w)->get_start()->type_string() + ": ";
+				else if (h == 0)
+				{
+					object* new_obj;
+					while (true)
+					{
+						string name_class;
+						string buff;
+						cout << "Enter name new class: ";
+						cin >> buff;
+						name_class = "class " + buff;
+						if (name_class == typeid(Int).name())
+						{
+							new_obj = new Int();
+							break;
+						}
+						else if (name_class == typeid(Double).name())
+						{
+							new_obj = new Double();
+							break;
+						}
+						else if (name_class == typeid(Bin).name())
+						{
+							new_obj = new Bin();
+							break;
+						}
+						else if (name_class == typeid(String).name())
+						{
+							new_obj = new String();
+							break;
+						}
+					}
+					lists->get(w)->push_start(new_obj);
+					cout << "Enter " + lists->get(w)->get_start()->type_string() + ": ";
+				}
+				else
+				{
+					cout << "h = 0 none basic class, return";
+					getchar();
+					break;
+				}
+				string data;
+				cin >> data;
+				if (get(h,w) != nullptr)
+					get(h, w)->set_value(data);
+				else
+				{
+					object* new_obj = nullptr;
+					if (lists->get(w)->get_start()->type_string() == typeid(Int).name())
+						new_obj = new Int(data);
+					else if (lists->get(w)->get_start()->type_string() == typeid(Double).name())
+						new_obj = new Double(data);
+					else if (lists->get(w)->get_start()->type_string() == typeid(Bin).name())
+						new_obj = new Bin(data);
+					else if (lists->get(w)->get_start()->type_string() == typeid(String).name())
+						new_obj = new String(data);
+					set(h, w, new_obj);
+				}
+				getchar();
+				getchar();
+			}
+			else if (pos == 2) //get
+			{
+				int h, w;
+				system("cls");
+				do
+				{
+					cout << "h = ";
+					cin >> h;
+				} while (h < 0 || h >= this->h);
+				do
+				{
+					cout << "w = ";
+					cin >> w;
+				} while (w < 0 || w >= this->w);
+				cout << get(h, w)->get_string() << endl;
+				getchar();
+				getchar();
+			}
+			else if (pos == 3) //null
+			{
+				int w;
+				system("cls");
+				do
+				{
+					cout << "Null column = ";
+					cin >> w;
+				} while (w < 0 || w >= this->w);
+				null(w);
+			}
+			else if (pos == 4) //print
+			{
+				system("cls");
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 5) //read file
+			{
+				system("cls");
+				string file;
+				cout << "Enter name file (*.txt): ";
+				cin >> file;
+				read_from_file(file);
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 6) //write file
+			{
+				system("cls");
+				string file;
+				cout << "Enter name file (*.txt): ";
+				cin >> file;
+				write_in_file(file);
+				getchar();
+				getchar();
+			}
+			else if (pos == 7) //set name column
+			{
+				system("cls");
+				int w;
+				do
+				{
+					cout << "Enter column = ";
+					cin >> w;
+				} while (w < 0 || w >= this->w);
+				string name;
+				cout << "Enter new name column: ";
+				cin >> name;
+				set_name_column(w, name);
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 8) //swap column
+			{
+				system("cls");
+				print();
+				int w1, w2;
+				do
+				{
+					cout << "Enter 1 column = ";
+					cin >> w1;
+				} while (w1 < 0 || w1 >= this->w);
+				do
+				{
+					cout << "Enter 2 column = ";
+					cin >> w2;
+				} while (w2 < 0 || w2 >= this->w);
+				swap_column(w1, w2);
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 9) //Sort by column
+			{
+				system("cls");
+				print();
+				int w;
+				do
+				{
+					cout << endl << "Enter column = ";
+					cin >> w;
+				} while (w < 0 || w >= this->w);
+
+				sort(w);
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 10) //Sort column
+			{
+				system("cls");
+				print();
+				int w;
+				do
+				{
+					cout << endl << "Enter column = ";
+					cin >> w;
+				} while (w < 0 || w >= this->w);
+				csort(w);
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 11) //Sort all
+			{
+				system("cls");
+				print();
+				csort();
+				print();
+				getchar();
+				getchar();
+			}
+			else if (pos == 12)
+			{
+				system("color 0F");
+				return;
+			}
+			draw_menu(pos, &menu);
+			break;
+		}
+		case BUTTON_UP:
+		{// up
+			if (pos > 0)
+				draw_menu(--pos, &menu);
+			break;
+		}
+		case BUTTON_DOWN:
+		{// down
+			if (pos < menu.size())
+				draw_menu(++pos, &menu);
+			break;
+		}
+		}
+
+	}
+}
+
+
+
