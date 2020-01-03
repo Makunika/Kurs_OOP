@@ -26,40 +26,43 @@ int main()
 	//cout << "bin4 > bin1?: " << (bin4 > bin1) << endl;
 	//cout << "bin5 = bin3 * bin1: " << (bin5 = bin3 * bin1) << endl;
 
-	Table<object> table(3,3);
+	Table<object> table;
 	
-	int b = 20;
+	//int b = 20;
+	table.interface();
+	//for (int i = 0; i < table.get_w() - 1; i++)
+	//{
+	//	for (int j = 0; j < table.get_h(); j++)
+	//	{
+	//		b--;
+	//		table.set(j, i, new Int(b));
+	//	}
+	//}
 
-	for (int i = 0; i < table.get_w() - 1; i++)
-	{
-		for (int j = 0; j < table.get_h(); j++)
-		{
-			b--;
-			table.set(j, i, new Int(b));
-		}
-	}
+	//for (int i = 0; i < table.get_h(); i++)
+	//{
+	//	table.set(i, table.get_w() - 1, new String("Hello, it is " + to_string(table.get_h() - i) + " wow"));
+	//}
 
-	for (int i = 0; i < table.get_h(); i++)
-	{
-		table.set(i, table.get_w() - 1, new String("Hello, it is " + to_string(table.get_h() - i) + " wow"));
-	}
+	//table.print();
+	//table.sort(0);
+	////table.set(2, 0, new String("5"));
+	//table.print();
 
-	table.print();
-	table.sort();
-	table.swap_column(0, 2);
-	table.set(2, 0, new String("5"));
-	table.print();
-
-	table.null(2);
-	table.set(0, 2, new Int(5));
-	table.set(2, 2, new Int(1));
-	table.print();
-	table.sort();
-	table.print();
+	//table.null(2);
+	//table.set(0, 2, new Int(5));
+	//table.set(2, 2, new Int(1));
+	//table.print();
+	//table.сsort();
+	//table.print();
 
 	table.read_from_file("123.txt");
 	table.print();
-	table.sort();
+	table.sort(0);
+	table.print();
+
+
+
 	table.write_in_file("543.txt");
 	table.read_from_file("543.txt");
 	table.print();
@@ -67,6 +70,8 @@ int main()
 	getchar();
 	return 0;
 }
+
+
 
 
 

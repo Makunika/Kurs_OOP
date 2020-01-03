@@ -1,3 +1,3 @@
-class Int: |3| |4| |4| |10| # 
-class String: |4| |Wow is is ahahahaha| |abcadasdadad| |privt kak dela| # 
-class Double: |5,000000| |5,400000| |100,000000| |120,000000| # 
+(Age)class Int: |3| |4| |4| |10| # 
+(Name)class String: |4| |Wow is is ahahahaha| |abcadasdadad| |privt kak dela| # 
+(Rost)class Double: |100,000000| |120,000000| |5,000000| |5,400000| # 

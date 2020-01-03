@@ -32,7 +32,9 @@ public:
 	int			size() const;
 	void		resize(int size);
 	void		sort();
-	void		swap(Node<T>* one, Node<T>* two);
+
+public:
+	static void	swap(Node<T>* one, Node<T>* two);
 
 private:
 	Node<T>*	head;
@@ -286,6 +288,30 @@ inline void List<T>::resize(int size)
 template<class T>
 inline void List<T>::sort()
 {
+	bool swapped;
+	for (int i = 0; i < size() - 1; i++)
+	{
+		swapped = false;
+		for (int j = 0; j < size() - i - 1; j++)
+		{
+			if (get(j) == nullptr)
+			{
+				swap(get_node(j), get_node(j + 1));
+				swapped = true;
+			}
+			else if (get(j + 1) == nullptr)
+			{
+
+			}
+			else if (*get(j) > *get(j + 1))
+			{
+				swap(get_node(j), get_node(j + 1));
+				swapped = true;
+			}
+		}
+		if (swapped == false)
+			break;
+	}
 }
 
 inline void List<object>::sort()
