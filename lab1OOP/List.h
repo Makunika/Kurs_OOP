@@ -32,6 +32,7 @@ public:
 	int			size() const;
 	void		resize(int size);
 	void		sort();
+	string		type_string_in_list();
 
 public:
 	static void	swap(Node<T>* one, Node<T>* two);
@@ -312,6 +313,35 @@ inline void List<T>::sort()
 		if (swapped == false)
 			break;
 	}
+}
+
+template<class T>
+inline string List<T>::type_string_in_list()
+{
+	string classname = "class NULL";
+	for (int i = 0; i < siz; i++)
+	{
+		if (get(i) != nullptr)
+		{
+			classname = typeid(get(i)).name();
+			break;
+		}
+	}
+	return classname;
+}
+
+inline string List<object>::type_string_in_list()
+{
+	string classname = "class NULL";
+	for (int i = 0; i < siz; i++)
+	{
+		if (get(i) != nullptr)
+		{
+			classname = get(i)->type_string();
+			break;
+		}
+	}
+	return classname;
 }
 
 inline void List<object>::sort()

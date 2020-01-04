@@ -161,9 +161,7 @@
     <ClCompile Include="Double.cpp" />
     <ClCompile Include="Int.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="object.cpp" />
     <ClCompile Include="String.cpp" />
-    <ClCompile Include="Tree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bigint\BigInteger.hh" />

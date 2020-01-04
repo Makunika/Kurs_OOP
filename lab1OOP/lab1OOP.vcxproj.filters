@@ -36,12 +36,6 @@
     <ClCompile Include="bigint\BigUnsignedInABase.cc">
       <Filter>Исходные файлы\BigInt</Filter>
     </ClCompile>
-    <ClCompile Include="Tree.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="object.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="Int.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -102,7 +96,7 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="Data.h">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

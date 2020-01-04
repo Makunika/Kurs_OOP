@@ -151,13 +151,9 @@ inline void Table<object>::set(int h, int w, object* data)
 {
 	if (h < 0 || w < 0||w  >= this->w || h >= this->h) throw;
 	
-	
-	if (lists->get(w)->get_start() != nullptr)
-	{
-		if (data->type() == lists->get(w)->get_start()->type())
-			lists->get(w)->set(h, data);
-	}
-	else if (h == 0)
+	if (data->type_string() == lists->get(w)->type_string_in_list())
+		lists->get(w)->set(h, data);
+	else if (lists->get(w)->type_string_in_list() == "class NULL")
 		lists->get(w)->set(h, data);
 	else delete data;
 }
@@ -213,15 +209,17 @@ inline void Table<object>::write_in_file(string name_file)
 			string name_col = "";
 			if (name_column->get(i) != nullptr)
 				name_col = *name_column->get(i);
-			string classname = "class NULL";
-			if (lists->get(i)->get_start() != nullptr)
-				classname = lists->get(i)->get_start()->type_string();
+			string classname = lists->get(i)->type_string_in_list();
 			out << "(" + name_col + ")" + classname + ": ";
 			for (int j = 0; j < h; j++)
 			{
 				if (lists->get(i)->get(j) != nullptr)
 				{
 					out << "|" + lists->get(i)->get(j)->get_string() + "| ";
+				}
+				else
+				{
+					out << "|NULL| ";
 				}
 			}
 			out << "# \n";
@@ -393,22 +391,30 @@ inline void Table<object>::read_from_file(string name_file)
 			{
 				if (resultCell[2].str() != " ")
 				{
+
 					h_tmp++;
 					if (h_tmp > h)
-					{
 						resize(h_tmp, w);
+
+					if (resultCell[2].str() == "NULL")
+					{
+						object* new_obj = nullptr;
+						lists->get_end()->set(h_tmp - 1, new_obj);
 					}
-					object* new_obj;
-					if (classname == typeid(Int).name())
-						new_obj = new Int(resultCell[2].str());
-					else if (classname == typeid(Double).name())
-						new_obj = new Double(resultCell[2].str());
-					else if (classname == typeid(Bin).name())
-						new_obj = new Bin(resultCell[2].str());
-					else if (classname == typeid(String).name())
-						new_obj = new String(resultCell[2].str());
-					else new_obj = nullptr;
-					lists->get_end()->set(h_tmp - 1, new_obj);
+					else
+					{
+						object* new_obj;
+						if (classname == typeid(Int).name())
+							new_obj = new Int(resultCell[2].str());
+						else if (classname == typeid(Double).name())
+							new_obj = new Double(resultCell[2].str());
+						else if (classname == typeid(Bin).name())
+							new_obj = new Bin(resultCell[2].str());
+						else if (classname == typeid(String).name())
+							new_obj = new String(resultCell[2].str());
+						else new_obj = nullptr;
+						lists->get_end()->set(h_tmp - 1, new_obj);
+					}
 				}
 				str_cells = resultCell.suffix();
 			}
@@ -454,10 +460,7 @@ inline void Table<object>::print()
 		if (name_column->get(j) != nullptr)
 			name_null = "(" + *name_column->get(j) + ")";
 		else name_null = "()";
-		size_t len_of_name = name_null.length() + class_null.length() + 2;
-
-		if (lists->get(j)->get_start() != nullptr)
-			len_of_name = name_null.length() + (lists->get(j)->get_start()->type_string()).length() + 2;
+		size_t len_of_name = name_null.length() + lists->get(j)->type_string_in_list().length() + 2;
 
 
 		if (len_of_name > max_len) {
@@ -482,9 +485,7 @@ inline void Table<object>::print()
 		if (name_column->get(col) != nullptr)
 			name_col = "(" + *name_column->get(col) + ")";
 
-		size_t name_len = class_null.length() + 2;
-		if (lists->get(col)->get_start() != nullptr)
-			name_len = (lists->get(col)->get_start()->type_string()).length() + 2;
+		size_t name_len = lists->get(col)->type_string_in_list().length() + 2;
 		name_len += name_col.length();
 
 
@@ -493,10 +494,7 @@ inline void Table<object>::print()
 			for (int i = 0; i < max_lens[col] - name_len; i++)
 				std::cout << " ";
 		}
-		if (lists->get(col)->get_start() != nullptr)
-			cout << name_col + lists->get(col)->get_start()->type_string() << "| ";
-		else
-			cout << name_col + class_null << "| ";
+		cout << name_col + lists->get(col)->type_string_in_list() << "| ";
 	}
 	cout << "\n";
 	for (int col = 0; col < w; col++)
@@ -582,6 +580,7 @@ inline void Table<object>::interface()
 			}
 			else if (pos == 1) //set
 			{
+				print();
 				int h, w;
 				system("cls");
 				do
@@ -594,9 +593,9 @@ inline void Table<object>::interface()
 					cout << "w = ";
 					cin >> w;
 				} while (w < 0 || w >= this->w);
-				if (lists->get(w)->get_start() != nullptr)
-					cout << "Enter " + lists->get(w)->get_start()->type_string() + ": ";
-				else if (h == 0)
+				if (lists->get(w)->type_string_in_list() != "class NULL")
+					cout << "Enter " + lists->get(w)->type_string_in_list() + ": ";
+				else
 				{
 					object* new_obj;
 					while (true)
@@ -627,14 +626,8 @@ inline void Table<object>::interface()
 							break;
 						}
 					}
-					lists->get(w)->push_start(new_obj);
-					cout << "Enter " + lists->get(w)->get_start()->type_string() + ": ";
-				}
-				else
-				{
-					cout << "h = 0 none basic class, return";
-					getchar();
-					break;
+					set(h, w, new_obj);
+					cout << "Enter " + lists->get(w)->type_string_in_list() + ": ";
 				}
 				string data;
 				cin >> data;
@@ -643,16 +636,17 @@ inline void Table<object>::interface()
 				else
 				{
 					object* new_obj = nullptr;
-					if (lists->get(w)->get_start()->type_string() == typeid(Int).name())
+					if (lists->get(w)->type_string_in_list() == typeid(Int).name())
 						new_obj = new Int(data);
-					else if (lists->get(w)->get_start()->type_string() == typeid(Double).name())
+					else if (lists->get(w)->type_string_in_list() == typeid(Double).name())
 						new_obj = new Double(data);
-					else if (lists->get(w)->get_start()->type_string() == typeid(Bin).name())
+					else if (lists->get(w)->type_string_in_list() == typeid(Bin).name())
 						new_obj = new Bin(data);
-					else if (lists->get(w)->get_start()->type_string() == typeid(String).name())
+					else if (lists->get(w)->type_string_in_list() == typeid(String).name())
 						new_obj = new String(data);
 					set(h, w, new_obj);
 				}
+				print();
 				getchar();
 				getchar();
 			}
@@ -676,6 +670,7 @@ inline void Table<object>::interface()
 			}
 			else if (pos == 3) //null
 			{
+				print();
 				int w;
 				system("cls");
 				do
