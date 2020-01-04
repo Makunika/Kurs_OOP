@@ -274,27 +274,20 @@ inline void Table<T>::sort(int num)
 			if (get(j, num) == nullptr)
 			{
 				for (int k = 0; k < w; k++)
-				{
 					List<T>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
-				}
 				swapped = true;
-			}
-			else if (get(j+1, num) == nullptr)
-			{
-
 			}
 			else if (*(get(j, num)) > *(get(j+1, num)))
 			{
 				for (int k = 0; k < w; k++)
-				{
 					List<T>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
-				}
 				swapped = true;
 			}
 		}
 		if (swapped == false)
 			break;
 	}
+
 }
 
 template<class T>
@@ -322,21 +315,13 @@ inline void Table<object>::sort(int num)
 			if (get(j, num) == nullptr)
 			{
 				for (int k = 0; k < w; k++)
-				{
 					List<object>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
-				}
 				swapped = true;
-			}
-			else if (get(j + 1, num) == nullptr)
-			{
-
 			}
 			else if (get(j, num)->cmp(*(get(j + 1, num))) == 1)
 			{
 				for (int k = 0; k < w; k++)
-				{
 					List<object>::swap(lists->get(k)->get_node(j), lists->get(k)->get_node(j + 1));
-				}
 				swapped = true;
 			}
 		}
@@ -756,8 +741,15 @@ inline void Table<object>::interface()
 					cin >> w;
 				} while (w < 0 || w >= this->w);
 
+				clock_t cl = clock();
 				sort(w);
+				clock_t delta = clock() - cl;
+
+
+
+
 				print();
+				cout << endl << "Time: " << delta << endl;
 				getchar();
 				getchar();
 			}
