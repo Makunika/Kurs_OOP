@@ -430,8 +430,8 @@ inline void Table<object>::print()
 	string class_null = "class NULL";
 	string name_null = "()";
 
-	vector<int> max_lens;
-	for (int j = 0; j < w; j++)
+	vector<size_t> max_lens;
+	for (int j = 0; j < w; j++) 
 	{
 		vector<string>* column = new vector<string>;
 
