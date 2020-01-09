@@ -534,9 +534,10 @@ inline void Table<object>::interface()
 		"Sort by column",
 		"Sort column",
 		"Sort all",
+		"print OFF",
 		"Exit"
 	};
-
+	bool print_ = false;
 	int pos = 0;
 	draw_menu(pos, &menu);
 	while (true)
@@ -549,6 +550,7 @@ inline void Table<object>::interface()
 			{
 				int h, w;
 				system("cls");
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
 				do
 				{
 					cout << "New size:" << endl << "h = ";
@@ -565,9 +567,12 @@ inline void Table<object>::interface()
 			}
 			else if (pos == 1) //set
 			{
-				print();
-				int h, w;
 				system("cls");
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
+				int h, w;
+				
 				do
 				{
 					cout << "h = ";
@@ -631,7 +636,8 @@ inline void Table<object>::interface()
 						new_obj = new String(data);
 					set(h, w, new_obj);
 				}
-				print();
+				if (print_)
+					print();
 				getchar();
 				getchar();
 			}
@@ -639,6 +645,7 @@ inline void Table<object>::interface()
 			{
 				int h, w;
 				system("cls");
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
 				do
 				{
 					cout << "h = ";
@@ -655,9 +662,12 @@ inline void Table<object>::interface()
 			}
 			else if (pos == 3) //null
 			{
-				print();
-				int w;
 				system("cls");
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
+				int w;
+				
 				do
 				{
 					cout << "Null column = ";
@@ -679,7 +689,9 @@ inline void Table<object>::interface()
 				cout << "Enter name file (*.txt): ";
 				cin >> file;
 				read_from_file(file);
-				print();
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
 				getchar();
 				getchar();
 			}
@@ -696,6 +708,9 @@ inline void Table<object>::interface()
 			else if (pos == 7) //set name column
 			{
 				system("cls");
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
 				int w;
 				do
 				{
@@ -706,14 +721,17 @@ inline void Table<object>::interface()
 				cout << "Enter new name column: ";
 				cin >> name;
 				set_name_column(w, name);
-				print();
+				if (print_)
+					print();
 				getchar();
 				getchar();
 			}
 			else if (pos == 8) //swap column
 			{
 				system("cls");
-				print();
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
 				int w1, w2;
 				do
 				{
@@ -726,14 +744,17 @@ inline void Table<object>::interface()
 					cin >> w2;
 				} while (w2 < 0 || w2 >= this->w);
 				swap_column(w1, w2);
-				print();
+				if (print_)
+					print();
 				getchar();
 				getchar();
 			}
 			else if (pos == 9) //Sort by column
 			{
 				system("cls");
-				print();
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
 				int w;
 				do
 				{
@@ -747,16 +768,18 @@ inline void Table<object>::interface()
 
 
 
-
-				print();
-				cout << endl << "Time: " << delta << endl;
+				if (print_)
+					print();
+				cout << endl << "Time sort: " << delta << endl;
 				getchar();
 				getchar();
 			}
 			else if (pos == 10) //Sort column
 			{
 				system("cls");
-				print();
+				cout << "size: w = " << this->w << " h = " << this->h << endl;
+				if (print_)
+					print();
 				int w;
 				do
 				{
@@ -764,20 +787,36 @@ inline void Table<object>::interface()
 					cin >> w;
 				} while (w < 0 || w >= this->w);
 				csort(w);
-				print();
+				if (print_)
+					print();
 				getchar();
 				getchar();
 			}
 			else if (pos == 11) //Sort all
 			{
 				system("cls");
-				print();
+				if (print_)
+					print();
 				csort();
-				print();
+				if (print_)
+					print();
 				getchar();
 				getchar();
 			}
 			else if (pos == 12)
+			{
+				if (print_)
+				{
+					print_ = false;
+					menu[12] = "print OFF";
+				}
+				else
+				{
+					print_ = true;
+					menu[12] = "print ON";
+				}
+			}
+			else if (pos == 13)
 			{
 				system("color 0F");
 				return;
